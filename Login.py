@@ -1,5 +1,4 @@
-# User/Pass CSV to be loaded in for access upon login
-# Can login (search csv for user) and create account (Creates a User)
+
 from User import User
 import pyinputplus as pyip
 import pickle
@@ -23,9 +22,6 @@ class Login():
                 logged_in = user
 
         
-        # Compare user/pass to saved directory
-        # then define Bool self.valid
-        # If valid, self.User 
 
 def create_user():
     name = pyip.inputStr("Input your name:\n")
@@ -42,15 +38,13 @@ def create_user():
 def attemptLogin(user, password):
     login = Login(user, password)
     if login.valid:
-        print("Log in sucessful!")
+        print("Log in successful!")
     else:
         # 'Incorrect'. ask if would like hint. if Y, username = inputStr(). load pickle and iterate through objects comparing username/user.username
-        hint_query = pyip.inputYesNo("Incorrect. Would you like a hint? (Y/N)\n")
-        if hint_query == "yes":
-            attempted_user = pyip.inputStr("Input a valid username to access its hint:\n")
-            giveHint(attempted_user)
-        else:
-            quit()
+        print("Incorrect.\n\n")
+        startLogin(True)
+        
+        
 
 def giveHint(attempted_user):
     users = []
@@ -66,15 +60,26 @@ def giveHint(attempted_user):
             valid_user = True
             print(f"Your hint is: {user.hint}")
     if valid_user == False:
-        print("Not a valid username. Try logging in again.")
+        print("Not a valid username")
+        startLogin(True)
 
+def startLogin(attempted):
+    if attempted == False:
+        print("Welcome to Jackson's rudimentary login page!")
+        print("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n")
+    choice = pyip.inputNum("Would you like to:\n\n[1] Log In\n[2] Create an Account\n[3] Forgot Password\n\n", min = 1, max = 3)
+    if choice == 1:
+        user = pyip.inputStr("Username:\n")
+        password = pyip.inputPassword("Password:\n")
+        attemptLogin(user, password)
+    elif choice == 2:
+        create_user()
+    else:
+        hint_query = pyip.inputYesNo("Would you like a hint? (Y/N)\n\n")
+        if hint_query == "yes":
+            attempted_user = pyip.inputStr("Input a valid username to access its hint:\n")
+            giveHint(attempted_user)
+        else:
+            startLogin(True)
 
-print("Welcome to Jackson's rudimentary login page!")
-print("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n")
-choice = pyip.inputNum("Would you like to:\n\n[1] Log In\n[2] Create an Account\n\n", min = 1, max = 2)
-if choice == 1:
-    user = pyip.inputStr("Username:\n")
-    password = pyip.inputPassword("Password:\n")
-    attemptLogin(user, password)
-else:
-    create_user()
+startLogin(False)

@@ -1,6 +1,5 @@
 import pickle
 
-
 class User():
     def __init__(self, name, username, password, hint):
         self.name = name
@@ -8,6 +7,7 @@ class User():
         self.password = password
         self.hint = hint
         print(f"Thanks for joining {self.name}!")
+
     def save_user(self):
         with open('loginData.pickle', 'wb') as output:
             pickle.dump(self, output, pickle.HIGHEST_PROTOCOL)
